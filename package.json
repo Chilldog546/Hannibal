@@ -1,0 +1,11 @@
+{
+  "name": "hannibal",
+  "version": "0.8.4",
+  "private": true,
+  "description": "A Lichess coach for your mind, not your moves. NVIDIA Nemotron on Nebius Token Factory.",
+  "scripts": {
+    "eval": "node eval/verifier-eval.js",
+    "test": "for t in tests/*.test.js; do node $t > /dev/null || exit 1; echo \"ok $t\"; done"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hannibal — your file</title>
+  <style>
+    @font-face { font-family: Garamond; src: url(fonts/eb-garamond-latin-400-normal.woff2) format('woff2'); font-weight: 400; }
+    @font-face { font-family: Garamond; src: url(fonts/eb-garamond-latin-600-normal.woff2) format('woff2'); font-weight: 600; }
+    @font-face { font-family: Garamond; src: url(fonts/eb-garamond-latin-400-italic.woff2) format('woff2'); font-style: italic; }
+    @font-face { font-family: Typed; src: url(fonts/special-elite-latin-400-normal.woff2) format('woff2'); }
+
+    :root {
+      --desk: #1f2420; --desk-line: #2a302b;
+      --manila: #cdb37c; --manila-dark: #a88f5a;
+      --paper: #efe7d6; --paper-shade: #e2d7c0; --rule: #c9bb9e;
+      --ink: #1d1915; --ink-soft: #5d5446; --stamp: #a3312a;
+      --general: #5b2a4a; --vale: #2f4858; --ashby: #3d5a3a;
+      --serif: Garamond, Georgia, serif; --typed: Typed, "Courier New", monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--desk); color: var(--ink);
+      background-image: radial-gradient(ellipse at 50% -10%, #2c332d 0, transparent 60%);
+      font: 18px/1.55 var(--serif); padding: 48px 16px 80px;
+    }
+    .folder { max-width: 760px; margin: 0 auto; position: relative; }
+    .tab {
+      display: inline-block; background: var(--manila); padding: 8px 22px 6px; border-radius: 8px 8px 0 0;
+      font: 15px var(--typed); color: #3b3020; margin-left: 28px;
+    }
+    .cover { background: var(--manila); border-radius: 2px 8px 8px 8px; padding: 22px; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+    .sheet {
+      background: var(--paper); padding: 48px 56px 56px; position: relative;
+      box-shadow: 0 2px 0 var(--paper-shade), 0 4px 0 var(--manila-dark);
+      background-image: linear-gradient(transparent 0 calc(100% - 1px), rgba(29,25,21,.03) 0);
+    }
+    @media (max-width: 640px) { .sheet { padding: 32px 22px 40px; } .cover { padding: 10px; } }
+
+    h1 { font: 600 64px/1 var(--serif); margin: 0; letter-spacing: -.01em; }
+    .stamp {
+      display: inline-block; margin: 18px 0 0; padding: 6px 14px 4px; border: 3px solid var(--stamp); color: var(--stamp);
+      font: 19px var(--typed); transform: rotate(-2.5deg); transform-origin: left; border-radius: 3px;
+      mask-image: radial-gradient(circle at 30% 40%, #000 60%, rgba(0,0,0,.75) 100%);
+    }
+    .lede { font-size: 20px; max-width: 34em; margin: 26px 0 0; }
+    .rule { border: 0; border-top: 1px solid var(--rule); margin: 44px 0 34px; }
+
+    h2 { font: 600 28px/1.2 var(--serif); margin: 0 0 6px; }
+    h2 .n { font: 22px var(--typed); color: var(--stamp); margin-right: 10px; }
+    .hint { color: var(--ink-soft); margin: 0 0 18px; max-width: 36em; font-size: 17px; }
+
+    .cast { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 22px; }
+    @media (max-width: 640px) { .cast { grid-template-columns: 1fr; } }
+    .card { position: relative; }
+    .card .face { width: 96px; height: 96px; margin-bottom: 10px; }
+    .card h3 { font: 600 20px/1.2 var(--serif); margin: 0 0 4px; }
+    .card p { margin: 0; font-size: 16px; line-height: 1.45; }
+    .card .flaw { font-style: italic; color: var(--ink-soft); margin-top: 6px; }
+
+    label { display: block; font: 15px var(--typed); color: var(--ink-soft); margin: 18px 0 6px; }
+    input[type=password], input[type=text], select {
+      width: 100%; font: 17px var(--serif); color: var(--ink); background: #f7f1e4;
+      border: 0; border-bottom: 1.5px solid var(--ink); padding: 8px 4px; border-radius: 0;
+    }
+    input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
+    .row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .row > input { flex: 1 1 220px; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .pair { grid-template-columns: 1fr; } }
+    button {
+      font: 16px var(--typed); color: var(--paper); background: var(--ink); border: 0; padding: 10px 18px 8px;
+      cursor: pointer; border-radius: 2px;
+    }
+    button.quiet { background: none; color: var(--ink); border: 1.5px solid var(--ink); }
+    button:disabled { opacity: .5; cursor: progress; }
+    .check { display: flex; gap: 10px; align-items: center; font: 17px var(--serif); color: var(--ink); margin-top: 16px; }
+    .msg { font: 15px var(--typed); min-height: 22px; margin-top: 12px; }
+    .ok { color: var(--ashby); } .err { color: var(--stamp); }
+
+    ol.log { list-style: none; margin: 18px 0 0; padding: 14px 16px; background: #e8dfcb; font: 14px/1.6 var(--typed); color: var(--ink-soft); }
+    ol.log:empty { display: none; }
+    ol.log li.tool { color: var(--ink); }
+    ol.log li.pass { color: var(--ashby); }
+    ol.log li.fail { color: var(--stamp); }
+
+    .impressions { margin-top: 26px; display: grid; gap: 18px; }
+    .imp { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: start; }
+    .imp q { font: italic 20px/1.45 var(--serif); quotes: none; display: block; }
+    .imp b { display: block; font: 600 15px var(--serif); margin-bottom: 2px; }
+    .findings { margin-top: 30px; display: grid; gap: 16px; }
+    .finding { background: #f8f3e8; border-left: 4px solid var(--ink); padding: 14px 18px; position: relative; box-shadow: 0 1px 0 var(--rule); }
+    .finding h4 { margin: 0 0 4px; font: 600 18px/1.3 var(--serif); padding-right: 92px; }
+    .finding .ev { font: 14px/1.5 var(--typed); color: var(--ink-soft); margin-top: 6px; }
+    .finding .verified {
+      position: absolute; right: 14px; top: 12px; font: 13px var(--typed); color: var(--stamp);
+      border: 2px solid var(--stamp); padding: 1px 7px 0; transform: rotate(4deg); border-radius: 2px;
+    }
+    button.link { background: none; color: var(--ink); padding: 0; font: italic 17px var(--serif); text-decoration: underline; }
+    .trend { margin-top: 30px; }
+    .trend h3 { font: 600 20px var(--serif); margin: 0 0 8px; }
+    .trow { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dotted var(--rule); padding: 6px 0; font-size: 17px; }
+    .tnum { font: 15px var(--typed); white-space: nowrap; }
+    .trend .ev, .findings .ev { font: 14px/1.5 var(--typed); color: var(--ink-soft); }
+    .filehead { font: 15px var(--typed); color: var(--ink-soft); margin-top: 22px; }
+    .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; font-size: 16px; color: var(--ink-soft); }
+    .latency { font: 15px var(--typed); color: var(--ink-soft); }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="folder">
+    <div class="tab" id="tab">Hannibal: file on you</div>
+    <div class="cover">
+      <main class="sheet">
+        <h1>Hannibal</h1>
+        <div class="stamp">A coach for your mind, not your moves</div>
+        <p class="lede">Three characters watch how you play on Lichess: when you rush, when you freeze, how you take a loss. After each game they tell you what they saw. They never judge the position or suggest a move.</p>
+
+        <section class="cast" id="cast" aria-label="The three characters"></section>
+
+        <hr class="rule">
+
+        <section>
+          <h2><span class="n">1</span>Connect Nemotron</h2>
+          <p class="hint">Hannibal runs on NVIDIA Nemotron models hosted by Nebius. Paste a Token Factory key from <a href="https://tokenfactory.nebius.com" target="_blank" rel="noopener">tokenfactory.nebius.com</a>. It stays in this browser.</p>
+          <label for="key">Nebius Token Factory key</label>
+          <input id="key" type="password" placeholder="Paste your key" autocomplete="off">
+          <div class="row" style="margin-top:14px"><button id="load" class="quiet" type="button">Load my Nemotron models</button></div>
+          <div class="pair">
+            <div>
+              <label for="liveModel">Fast model, for remarks during a game</label>
+              <select id="liveModel"><option value="">Load models first</option></select>
+            </div>
+            <div>
+              <label for="deepModel">Deep model, for debriefs and reading your games</label>
+              <select id="deepModel"><option value="">Load models first</option></select>
+            </div>
+          </div>
+        </section>
+
+        <hr class="rule">
+
+        <section>
+          <h2><span class="n">2</span>Let them read your games</h2>
+          <p class="hint">An agent reads up to 60 of your recent games, with the clock time of every move, and investigates them with tools. A verifier recomputes every finding from the data and sends weak ones back.</p>
+          <div class="row">
+            <input id="user" type="text" placeholder="Your Lichess username" aria-label="Your Lichess username">
+            <button id="build" type="button">Read my games</button>
+          </div>
+          <p class="hint" style="margin-top:12px"><button id="sample" class="link" type="button">Show a sample file first</button></p>
+          <ol id="log" class="log" aria-live="polite"></ol>
+          <div id="file"></div>
+        </section>
+
+        <hr class="rule">
+
+        <section>
+          <h2><span class="n">3</span>Play</h2>
+          <p class="hint">Lichess bans extensions that help you play, so by default the characters only speak during games against the computer. Every game gets a debrief when it ends.</p>
+          <label for="mode">Remarks during a game</label>
+          <select id="mode">
+            <option value="computer">Only against the computer and bots</option>
+            <option value="casual">Against the computer and in casual games</option>
+            <option value="always">In every game</option>
+            <option value="off">Never, only the debrief</option>
+          </select>
+          <label for="lead">Who speaks during a game</label>
+          <select id="lead">
+            <option value="ensemble">All three, whoever the moment belongs to</option>
+            <option value="general">Only the General</option>
+            <option value="vale">Only Dr. Vale</option>
+            <option value="ashby">Only Ashby</option>
+          </select>
+          <label class="check"><input type="checkbox" id="voice"> Read remarks aloud</label>
+          <label class="check"><input type="checkbox" id="reviewer" checked> Have the fast model review every debrief line before you see it</label>
+          <div class="row" style="margin-top:22px"><button id="save" type="button">Save settings</button></div>
+          <div id="msg" class="msg" role="status"></div>
+        </section>
+
+        <hr class="rule">
+
+        <div class="foot">
+          <span id="filecount">No games in the file yet.</span>
+          <button id="clear" class="quiet" type="button">Forget all games</button>
+        </div>
+        <p class="latency" id="latency">No calls to Nemotron yet.</p>
+      </main>
+    </div>
+  </div>
+  <script src="analysis.js"></script>
+  <script src="portraits.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

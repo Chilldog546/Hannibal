@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Hannibal — a coach for your chess mind",
+  "version": "0.8.4",
+  "description": "Three characters watch how you play on Lichess (haste, hesitation, tilt, habits) and debrief you after each game. Powered by NVIDIA Nemotron on Nebius.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://api.tokenfactory.nebius.com/*", "https://lichess.org/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "Hannibal settings"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://lichess.org/*"],
+      "js": ["vendor-chess.js", "analysis.js", "portraits.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["openings.json"],
+      "matches": ["https://lichess.org/*"]
+    }
+  ]
+}
